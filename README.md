@@ -26,6 +26,8 @@ Example use of the library:
     tree = Tree.from_dict(tree_data)
     draw_tree(tree, "tree.svg")
 ```
+Result: <br>
+![tree](tree.svg) <br>
 Please visit `examples/` directory for a few more examples, including customization, node ordering and visualizing different objects.
 
 ## Customization
