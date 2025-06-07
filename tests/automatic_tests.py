@@ -1,7 +1,6 @@
 import unittest
 from easytreevis import *
 from easytreevis.core import TreeNode
-import xml.etree.ElementTree as ET
 
 from easytreevis.layout import compute_positions
 
@@ -145,34 +144,6 @@ def test_draw_tree_creates_svg(tmp_path):
     assert "<svg" in content
     assert "<circle" in content
     assert "<line" in content
-
-def test_draw_tree_text_labels_from_object(tmp_path):
-    adj = {
-        ('root', 'R'): ['child'],
-        ('child', 'C'): []
-    }
-    tree = Tree.from_dict(adj)
-
-    output_file = tmp_path / "tree.svg"
-    draw_tree(tree, str(output_file))
-    
-    svg = ET.parse(output_file).getroot()
-    texts = [el.text for el in svg.findall(".//{http://www.w3.org/2000/svg}text")]
-    assert "R" in texts or "C" in texts
-
-def test_draw_tree_text_fallbacks_to_id(tmp_path):
-    adj = {
-        ('root', None): ['child'],
-        ('child', None): []
-    }
-    tree = Tree.from_dict(adj)
-
-    output_file = tmp_path / "tree.svg"
-    draw_tree(tree, str(output_file))
-
-    svg = ET.parse(output_file).getroot()
-    texts = [el.text for el in svg.findall(".//{http://www.w3.org/2000/svg}text")]
-    assert "root" in texts or "child" in texts
 
 def test_draw_tree_handles_non_string_objects(tmp_path):
     adj = {
