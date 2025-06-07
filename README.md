@@ -1,4 +1,12 @@
 # Easy Tree Visualization Library
+
+![PyPI](https://img.shields.io/pypi/v/easytreevis?style=flat-square)
+![Python](https://img.shields.io/badge/python-3.8%2B-blue?style=flat-square&logo=python)
+![License](https://img.shields.io/github/license/denchal/easytreevis?style=flat-square)
+![Stars](https://img.shields.io/github/stars/denchal/easytreevis?style=flat-square)
+![Issues](https://img.shields.io/github/issues/denchal/easytreevis?style=flat-square)
+![Last Commit](https://img.shields.io/github/last-commit/denchal/easytreevis?style=flat-square)
+
 The goal of this mini-project is to provide an easy, customizable way to create visualizations of tree structures, without use of `networkx` or similar. <br>
 
 
