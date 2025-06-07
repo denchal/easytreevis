@@ -13,4 +13,4 @@ if __name__ == "__main__":
         ("L", 12): []
     }
     tree = Tree.from_dict(tree_data)
-    draw_tree(tree, "tree.svg", NODE_RADIUS=40, FILL_NODE='red')
+    draw_tree(tree, "tree.svg", NODE_RADIUS=30, FILL_NODE='red', EDGE_STROKE_WIDTH=5, FONT_SIZE=30)

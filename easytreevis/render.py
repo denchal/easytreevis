@@ -1,25 +1,29 @@
 import svgwrite
 from .layout import compute_positions
 from .core import Tree
-from .utils import is_string_convertible
+from .utils import StringWrapper
 
 DEFAULT_PARAMS = {
     "NODE_RADIUS": 20,
     "FONT_SIZE": 16,
+    "EDGE_STROKE": "black",
     "EDGE_STROKE_WIDTH": 3,
     "FILL_NODE": "white",
     "STROKE_NODE": "black",
     "STROKE_NODE_WIDTH": 2,
-    "STROKE_EDGE": "black",
     "MAX_SVG_WIDTH": float("inf"),
     "MAX_SVG_HEIGHT": float("inf"),
     "X_SPACING": 60,
     "Y_SPACING": 80,
+    "TEXT_OFFSET": 3,
     "MARGIN": 40
 }
 
-def draw_tree(tree: Tree, output: str, **kwargs) -> None:
+def draw_tree(tree: Tree, output: str, wrapper = StringWrapper(), **kwargs) -> None:
     params = {**DEFAULT_PARAMS, **kwargs}
+    if int(params["TEXT_OFFSET"]) == 0:
+        params["TEXT_OFFSET"] = 1
+
     margin = params["MARGIN"]
 
     root = tree.root
@@ -55,7 +59,7 @@ def draw_tree(tree: Tree, output: str, **kwargs) -> None:
                 x2, y2 = shifted(positions[child.id][0])
                 dwg.add(dwg.line(
                     start=(x1, y1), end=(x2, y2),
-                    stroke=params["STROKE_EDGE"], stroke_width=params["EDGE_STROKE_WIDTH"]
+                    stroke=params["EDGE_STROKE"], stroke_width=params["EDGE_STROKE_WIDTH"]
                 ))
                 stack.append(child)
 
@@ -71,16 +75,22 @@ def draw_tree(tree: Tree, output: str, **kwargs) -> None:
             stroke_width=params["STROKE_NODE_WIDTH"]
         ))
 
-        label = str(object) if object and is_string_convertible(object) else (
-            str(node_id) if is_string_convertible(node_id) else None
-        )
-        if label:
-            dwg.add(dwg.text(
-                label,
-                insert=(sx, sy + params["FONT_SIZE"]/3),
+        label = wrapper.get_label(object, node_id)
+
+        if label != "" and label != []:
+            text = dwg.text(
+                '',
+                insert=(sx, sy + params["FONT_SIZE"]/params["TEXT_OFFSET"]),
                 text_anchor="middle",
                 font_size=params["FONT_SIZE"],
-            ))
+            )
+            if isinstance(label, list):
+                for i, line in enumerate(label):
+                    tspan = dwg.tspan(line, x=[sx], dy=["1.2em"] if i > 0 else [0])
+                    text.add(tspan)
+            else:
+                text.add(dwg.tspan(label))
+            dwg.add(text)
 
     if output:
         dwg.save()

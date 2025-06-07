@@ -155,7 +155,7 @@ def test_draw_tree_text_labels_from_object(tmp_path):
 
     output_file = tmp_path / "tree.svg"
     draw_tree(tree, str(output_file))
-
+    
     svg = ET.parse(output_file).getroot()
     texts = [el.text for el in svg.findall(".//{http://www.w3.org/2000/svg}text")]
     assert "R" in texts or "C" in texts
